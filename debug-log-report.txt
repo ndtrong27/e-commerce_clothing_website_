@@ -1,0 +1,7 @@
+========================================
+  Debug Log Audit — Tue Feb 17 07:38:13 UTC 2026
+  Scanning: backend/src
+========================================
+
+========================================
+  Scan complete. Report: debug-log-report.txt
