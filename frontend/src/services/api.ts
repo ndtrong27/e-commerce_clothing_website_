@@ -9,16 +9,30 @@ export const api = axios.create({
     },
 });
 
+import { Product } from '../types';
+
+interface ApiProduct extends Omit<Product, 'price'> {
+    price: string;
+}
+
 export const fetchProducts = async () => {
     const response = await api.get('/products');
-    return response.data;
+    return response.data.map((product: ApiProduct) => ({
+        ...product,
+        price: parseFloat(product.price)
+    }));
 };
 
 export const fetchProductById = async (id: string) => {
     const response = await api.get(`/products/${id}`);
-    return response.data;
+    const data = response.data as ApiProduct;
+    return {
+        ...data,
+        price: parseFloat(data.price)
+    };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createOrder = async (orderData: any) => {
     const response = await api.post('/orders', orderData);
     return response.data;

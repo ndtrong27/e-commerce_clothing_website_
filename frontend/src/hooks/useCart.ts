@@ -6,12 +6,24 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/cart';
 
+const generateId = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+};
+
+const isValidUuid = (id: string) => {
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return regex.test(id);
+};
+
 // Helper to get or create a guest User ID
 const getUserId = () => {
     if (typeof window === 'undefined') return 'guest';
     let userId = localStorage.getItem('user_id');
-    if (!userId) {
-        userId = crypto.randomUUID();
+    if (!userId || !isValidUuid(userId)) {
+        userId = generateId();
         localStorage.setItem('user_id', userId);
     }
     return userId;
